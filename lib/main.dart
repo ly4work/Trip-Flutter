@@ -17,8 +17,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final String title = 'my app';
+    final String title = '主页';
     const String homeTitle = '主页';
+    final wordPair = WordPair.random();
     return MaterialApp(
       title: title,
       theme: ThemeData(
@@ -34,6 +35,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: homeTitle),
+      // home: Scaffold(
+      //     appBar: AppBar(title: Text(title)),
+      //     body: Center(child: Text(wordPair.asPascalCase))),
     );
   }
 }
@@ -60,13 +64,17 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+    Future.delayed(new Duration(seconds: 2), () {
+      print('hello count buton');
+    }).then((result) {
+      setState(() {
+        // This call to setState tells the Flutter framework that something has
+        // changed in this State, which causes it to rerun the build method below
+        // so that the display can reflect the updated values. If we changed
+        // _counter without calling setState(), then the build method would not be
+        // called again, and so nothing would appear to happen.
+        _counter++;
+      });
     });
   }
 
@@ -118,7 +126,9 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
+
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
