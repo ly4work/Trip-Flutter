@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 
+// import 'dart:async' show Future;
+// import 'package:flutter/services.dart' show rootBundle;
+
+// Future<String> loadAsset() async {
+//   return await rootBundle.loadString('assets/config.json');
+// }
+
 void main() => runApp(MyApp());
 
 class Person {
@@ -17,11 +24,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final String title = '主页';
-    const String homeTitle = '主页';
     final wordPair = WordPair.random().toString();
     return MaterialApp(
       title: wordPair,
+      // showPerformanceOverlay: true,
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -32,9 +38,12 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.red,
       ),
-      routes: {"new_page": (context) => NewRoute()},
+      routes: {
+        "new_page": (context) => NewRoute(),
+        "foundation": (context) => BackgroundImageViewRoute()
+      },
       home: MyHomePage(title: wordPair),
       // home: Scaffold(
       //     appBar: AppBar(title: Text(title)),
@@ -130,7 +139,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 //   return new NewRoute();
                 // }));
               },
-            )
+            ),
+            FlatButton(
+                child: Text('基金会'),
+                textColor: Colors.red,
+                onPressed: () {
+                  Navigator.pushNamed(context, 'foundation');
+                })
           ],
         ),
       ),
@@ -153,5 +168,37 @@ class NewRoute extends StatelessWidget {
         body: Center(
           child: Text("This is a New Route"),
         ));
+  }
+}
+
+class BackgroundImageViewRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // return new DecoratedBox(
+    //   decoration: new BoxDecoration(
+    //       image:
+    //           new DecorationImage(image: new AssetImage('graphics/start.jpg'))),
+    // );
+    // return Image.asset('graphics/start.jpg');
+    return Scaffold(
+        appBar: AppBar(title: Text('New Route')),
+        body: Center(
+          child: Echo(text: 'echo 页'),
+        ));
+  }
+}
+
+class Echo extends StatelessWidget {
+  const Echo({Key key, @required this.text, this.backgroundColor: Colors.blue})
+      : super(key: key);
+  final String text;
+  final Color backgroundColor;
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        color: backgroundColor,
+        child: Text(text),
+      ),
+    );
   }
 }
