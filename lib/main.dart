@@ -19,9 +19,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final String title = '主页';
     const String homeTitle = '主页';
-    final wordPair = WordPair.random();
+    final wordPair = WordPair.random().toString();
     return MaterialApp(
-      title: title,
+      title: wordPair,
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -34,7 +34,8 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: homeTitle),
+      routes: {"new_page": (context) => NewRoute()},
+      home: MyHomePage(title: wordPair),
       // home: Scaffold(
       //     appBar: AppBar(title: Text(title)),
       //     body: Center(child: Text(wordPair.asPascalCase))),
@@ -119,6 +120,17 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.display1,
             ),
+            FlatButton(
+              child: Text('open new route'),
+              textColor: Colors.blue,
+              onPressed: () {
+                Navigator.pushNamed(context, "new_page");
+                // Navigator.push(context,
+                //     new MaterialPageRoute(builder: (context) {
+                //   return new NewRoute();
+                // }));
+              },
+            )
           ],
         ),
       ),
@@ -130,5 +142,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
       // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+}
+
+class NewRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(title: Text('New Route')),
+        body: Center(
+          child: Text("This is a New Route"),
+        ));
   }
 }
