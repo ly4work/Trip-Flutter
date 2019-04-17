@@ -54,7 +54,6 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
-
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
@@ -72,6 +71,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+  }
 
   void _incrementCounter() {
     Future.delayed(new Duration(seconds: 2), () {
@@ -200,6 +205,37 @@ class Echo extends StatelessWidget {
       child: Container(
         color: backgroundColor,
         child: Text(text),
+      ),
+    );
+  }
+}
+
+class TapBoxA extends StatefulWidget {
+  TapBoxA({Key key}) : super(key: key);
+  @override
+  _TapBoxAState createState() => new _TapBoxAState();
+}
+
+class _TapBoxAState extends State<TapBoxA> {
+  bool _active = false;
+  void _handleTap() {
+    setState(() {
+      _active = !_active;
+    });
+  }
+
+  Widget build(BuildContext context) {
+    return new GestureDetector(
+      onTap: _handleTap,
+      child: new Container(
+        child: new Center(
+          child: new Text(_active ? 'Active' : 'Inactive',
+              style: new TextStyle(fontSize: 32.0, color: Colors.white)),
+        ),
+        width: 200.0,
+        height: 200.0,
+        decoration: new BoxDecoration(
+            color: _active ? Colors.lightGreen[700] : Colors.grey[600]),
       ),
     );
   }
