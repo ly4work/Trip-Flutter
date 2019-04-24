@@ -1,3 +1,4 @@
+import 'package:chak/pages/new_dog_page.dart';
 import 'package:flutter/material.dart';
 import 'dog_model.dart';
 import 'dog_card.dart';
@@ -37,6 +38,12 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           title: Text(widget.title),
           backgroundColor: Colors.black87,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.add),
+              onPressed: _showNewDogForm,
+            )
+          ],
         ),
         body: Container(
           child: Center(
@@ -56,5 +63,16 @@ class _MyHomePageState extends State<MyHomePage> {
             )
           ),
         ));
+  }
+  Future _showNewDogForm() async {
+    Dog newDog = await Navigator.of(context).push(
+      MaterialPageRoute(builder: (BuildContext context) {
+        return AddDogFormPage();
+      })
+    );
+
+    if(newDog != null) {
+      initialDoggos.add(newDog);
+    }
   }
 }

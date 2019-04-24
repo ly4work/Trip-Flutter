@@ -13,32 +13,37 @@ class DogDetailPage extends StatefulWidget {
 
 class _DogDetailPageState extends State<DogDetailPage> {
   final double dogAvatarSize = 150.0;
+  double _sliderValue = 10.0;
+
   Widget get dogImage {
-    return Container(
-      height: dogAvatarSize,
-      width: dogAvatarSize,
-      decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          boxShadow: [
-            const BoxShadow(
-              offset: const Offset(1.0, 2.0),
-              blurRadius: 2.0,
-              spreadRadius: -1.0,
-              color: const Color(0x33000000),
-            ),
-            const BoxShadow(
-                offset: const Offset(2.0, 1.0),
-                blurRadius: 3.0,
-                spreadRadius: 0.0,
-                color: const Color(0x24000000)),
-            const BoxShadow(
-                offset: const Offset(3.0, 1.0),
-                blurRadius: 4.0,
-                spreadRadius: 2.0,
-                color: const Color(0x1F000000)),
-          ],
-          image: DecorationImage(
-              fit: BoxFit.cover, image: NetworkImage(widget.dog.imageUrl))),
+    return Hero(
+      tag: widget.dog,
+      child: Container(
+        height: dogAvatarSize,
+        width: dogAvatarSize,
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              const BoxShadow(
+                offset: const Offset(1.0, 2.0),
+                blurRadius: 2.0,
+                spreadRadius: -1.0,
+                color: const Color(0x33000000),
+              ),
+              const BoxShadow(
+                  offset: const Offset(2.0, 1.0),
+                  blurRadius: 3.0,
+                  spreadRadius: 0.0,
+                  color: const Color(0x24000000)),
+              const BoxShadow(
+                  offset: const Offset(3.0, 1.0),
+                  blurRadius: 4.0,
+                  spreadRadius: 2.0,
+                  color: const Color(0x1F000000)),
+            ],
+            image: DecorationImage(
+                fit: BoxFit.cover, image: NetworkImage(widget.dog.imageUrl))),
+      ),
     );
   }
 
@@ -95,6 +100,56 @@ class _DogDetailPageState extends State<DogDetailPage> {
     );
   }
 
+  /**
+   * 编辑排行指数
+   */
+  Widget get addYourRating {
+    return Column(
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Flexible(
+                flex: 1,
+                child: Slider(
+                    activeColor: Colors.indigoAccent,
+                    min: 0.0,
+                    max: 15.0,
+                    onChanged: (newRating) {
+                      setState(() {
+                        _sliderValue = newRating;
+                      });
+                    },
+                    value: _sliderValue),
+              ),
+              Container(
+                width: 50.0,
+                alignment: Alignment.center,
+                child: Text(
+                  '${_sliderValue.toInt()}',
+                  style: Theme.of(context).textTheme.display1,
+                ),
+              )
+            ],
+          ),
+        ),
+        submitRatingButton
+      ],
+    );
+  }
+
+  /**
+   * 提交修改
+   */
+  Widget get submitRatingButton {
+    return RaisedButton(
+        onPressed: updateRating,
+        child: Text('Submit'),
+        color: Colors.indigoAccent);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,7 +158,36 @@ class _DogDetailPageState extends State<DogDetailPage> {
         backgroundColor: Colors.black87,
         title: Text('Meet ${widget.dog.name}'),
       ),
-      body: dogProfile,
+      body: ListView(
+        children: <Widget>[dogProfile, addYourRating],
+      ),
     );
+  }
+
+  void updateRating() {
+    if (_sliderValue < 10) {
+      _ratingErrorDialog();
+    } else {
+      setState(() {
+        widget.dog.rating = _sliderValue.toInt();
+      });
+    }
+  }
+
+  Future<Null> _ratingErrorDialog() async {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Text('They are good dogs, nardo'),
+            title: Text('Error!'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Try Again'),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            ],
+          );
+        });
   }
 }
