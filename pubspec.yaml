@@ -25,7 +25,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   english_words: ^3.1.0
   path_provider: ^0.4.1
-
+  flutter_color_plugin: ^0.0.2 
 dev_dependencies:
   flutter_test:
     sdk: flutter

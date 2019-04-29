@@ -7,7 +7,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: '指尖',
-      
+      theme: ThemeData(
+        primarySwatch: Colors.blue
+      ),
+      home: Container(
+        child: Text('Trip-Lik'),
+      ),
     );
   }
 }
