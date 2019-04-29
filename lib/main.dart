@@ -1,17 +1,21 @@
+import 'package:chak/home_page.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+import 'package:flutter_color_plugin/flutter_color_plugin.dart';
 
-class MyApp extends StatelessWidget {
+void main() => runApp(MainApp());
+
+class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: '指尖',
-      theme: ThemeData(
-        primarySwatch: Colors.blue
-      ),
-      home: Container(
-        child: Text('Trip-Lik'),
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Trip-Lik'),
+        ),
+        body: HomePage(),
       ),
     );
   }
