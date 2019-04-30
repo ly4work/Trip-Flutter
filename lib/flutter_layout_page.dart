@@ -14,6 +14,12 @@ class _LayoutPageState extends State<LayoutPage> {
       home: Scaffold(
         appBar: AppBar(
           title: Text('Home'),
+          leading: GestureDetector(
+            onTap: (){
+              Navigator.pop(context);
+            },
+            child: Icon(Icons.arrow_back),
+          ),
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: [

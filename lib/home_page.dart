@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -14,6 +13,12 @@ class _HomePageState extends State<HomePage> {
       home: Scaffold(
         appBar: AppBar(
           title: Text('Home'),
+          leading: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(Icons.arrow_back_ios),
+          ),
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: [
@@ -56,10 +61,9 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                         children: <Widget>[
                           Chip(
-                            avatar: Icon(Icons.gps_fixed),
-                            label: Text('打开定位'),
-                            backgroundColor: Colors.white12
-                          ),
+                              avatar: Icon(Icons.gps_fixed),
+                              label: Text('打开定位'),
+                              backgroundColor: Colors.white12),
                           Container(
                             height: 200.0,
                             margin: EdgeInsets.only(top: 10),
