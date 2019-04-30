@@ -25,12 +25,16 @@ class _PhotoPageState extends State<PhotoPage> {
           child: Icon(Icons.arrow_back_ios),
         ),
       ),
-      body: Center(
-        child: Wrap(
-          spacing: 5.0,
-          runSpacing: 5.0,
-          children: _genImages(),
-        ),
+      body: Column(
+        children: <Widget>[
+          Center(
+            child: Wrap(
+              spacing: 5.0,
+              runSpacing: 5.0,
+              children: _genImages(),
+            ),
+          )
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _pickImage,

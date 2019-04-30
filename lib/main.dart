@@ -45,7 +45,7 @@ class _RouteNavigatorState extends State<RouteNavigator> {
       child: Column(
         children: <Widget>[
           SwitchListTile(
-            title: Text('${byName ? "": "不"}通过路由名跳转'),
+            title: Text('${byName ? "" : "不"}通过路由名跳转'),
             value: byName,
             onChanged: (value) {
               setState(() {
@@ -69,11 +69,12 @@ class _RouteNavigatorState extends State<RouteNavigator> {
       child: RaisedButton(
         onPressed: () {
           //  通过路由名跳转
-          if(byName){
+          if (byName) {
             Navigator.pushNamed(context, routerName);
-          }else {
+          } else {
             //  通过路由直接builder组件
-            Navigator.push(context, MaterialPageRoute(builder: (context) => page));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => page));
           }
         },
         child: Text(title),
