@@ -1,6 +1,8 @@
 import 'package:chak/flutter_layout_page.dart';
 import 'package:chak/gesture_page.dart';
 import 'package:chak/home_page.dart';
+import 'package:chak/launch_use_page.dart';
+import 'package:chak/photo_app_page.dart';
 import 'package:chak/res_page.dart';
 import 'package:flutter/material.dart';
 
@@ -23,6 +25,8 @@ class MainApp extends StatelessWidget {
         'home': (BuildContext context) => HomePage(),
         'gesture': (BuildContext context) => GesturePage(),
         'resource': (BuildContext context) => ResPage(),
+        'launch': (BuildContext context) => LaunchPage(),
+        'photo': (BuildContext context) => PhotoPage(),
       },
     );
   }
@@ -50,9 +54,11 @@ class _RouteNavigatorState extends State<RouteNavigator> {
             },
           ),
           _item('layout 组件 Demo', LayoutPage(), 'layout'),
-          _item('HomePage 组件 Demo', HomePage(), 'HomePage'),
-          _item('GesturePage 组件 Demo', GesturePage(), 'GesturePage'),
-          _item('ResPage 组件 Demo', ResPage(), 'ResPage'),
+          _item('HomePage 组件 Demo', HomePage(), 'home'),
+          _item('GesturePage 组件 Demo', GesturePage(), 'gesture'),
+          _item('ResPage 组件 Demo', ResPage(), 'resource'),
+          _item('LaunchPage 组件 Demo', LaunchPage(), 'launch'),
+          _item('PhotoPage 组件 Demo', PhotoPage(), 'photo'),
         ],
       ),
     );
