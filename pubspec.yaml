@@ -26,6 +26,7 @@ dependencies:
   path_provider: ^0.4.1
   flutter_color_plugin: ^0.0.2 
   url_launcher: ^5.0.2
+  image_picker: ^0.6.0+1
 dev_dependencies:
   flutter_test:
     sdk: flutter
