@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -45,21 +46,66 @@ class _HomePageState extends State<HomePage> {
           },
         ),
         body: _currentIndex == 0
-            ? Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                ),
+            ? RefreshIndicator(
                 child: ListView(
                   children: <Widget>[
-                    Chip(
-                      avatar: Icon(Icons.local_activity),
-                      label: Text('定位'),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          Chip(
+                            avatar: Icon(Icons.gps_fixed),
+                            label: Text('打开定位'),
+                            backgroundColor: Colors.white12
+                          ),
+                          Container(
+                            height: 200.0,
+                            margin: EdgeInsets.only(top: 10),
+                            decoration:
+                                BoxDecoration(color: Colors.transparent),
+                            child: PageView(
+                              children: <Widget>[
+                                _item('banner1', Colors.deepPurple),
+                                _item('banner2', Colors.green),
+                                _item('banner3', Colors.pink),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
+                onRefresh: _handleRefresh,
               )
-            : Text('个人中心'),
+            : Container(
+                child: Center(
+                  child: Text(
+                    '个人中心',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                padding: EdgeInsets.all(20.0),
+              ),
       ),
     );
+  }
+
+  Future<Null> _handleRefresh() async {
+    await Future.delayed(Duration(milliseconds: 200));
+    return null;
+  }
+
+  _item(String title, MaterialColor color) {
+    return Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(color: color),
+        child: Text(title,
+            style: TextStyle(
+              fontSize: 22.0,
+              color: Colors.white,
+            )));
   }
 }
