@@ -10,7 +10,7 @@ class PhotoPage extends StatefulWidget {
 }
 
 class _PhotoPageState extends State<PhotoPage> {
-  File _image;
+  List<File> _images = [];
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,11 @@ class _PhotoPageState extends State<PhotoPage> {
         ),
       ),
       body: Center(
-        child: _image == null ? Text('No image selected') : Image.file(_image),
+        child: Wrap(
+          spacing: 5.0,
+          runSpacing: 5.0,
+          children: _genImages(),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _pickImage,
@@ -47,22 +51,64 @@ class _PhotoPageState extends State<PhotoPage> {
             ));
   }
 
+  //  获取相机或相册图片
   Future _getImage(bool isTakePhoto) async {
     Navigator.pop(context);
     var image = await ImagePicker.pickImage(
         source: isTakePhoto ? ImageSource.camera : ImageSource.gallery);
 
     setState(() {
-      _image = image;
+      _images.add(image);
     });
   }
 
+  //  底部弹出框
   _item(String name, bool isTakePhoto) {
     return GestureDetector(
-      child: ListTile(
-          leading: Icon(isTakePhoto ? Icons.camera_alt : Icons.photo_library),
-          title: Text(name),
-          onTap: () => _getImage(isTakePhoto))
-    );
+        child: ListTile(
+            leading: Icon(isTakePhoto ? Icons.camera_alt : Icons.photo_library),
+            title: Text(name),
+            onTap: () => _getImage(isTakePhoto)));
+  }
+
+  //  渲染图片列表
+  _genImages() {
+    return _images.map((file) {
+      return Stack(
+        children: <Widget>[
+          ClipRRect(
+            borderRadius: BorderRadius.circular(5.0),
+            child: Image.file(
+              file,
+              width: 120.0,
+              height: 90,
+              fit: BoxFit.fill,
+            ),
+          ),
+          Positioned(
+            right: 5.0,
+            top: 5.0,
+            child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _images.remove(file);
+                });
+              },
+              child: ClipOval(
+                child: Container(
+                  padding: EdgeInsets.all(3.0),
+                  decoration: BoxDecoration(color: Colors.black54),
+                  child: Icon(
+                    Icons.close,
+                    size: 18,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
+      );
+    }).toList();
   }
 }
