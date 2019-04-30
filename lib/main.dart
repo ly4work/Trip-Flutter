@@ -1,5 +1,6 @@
-import 'package:chak/res_page.dart';
 import 'package:flutter/material.dart';
+import 'package:transparent_image/transparent_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 void main() => runApp(MainApp());
 
@@ -13,7 +14,30 @@ class MainApp extends StatelessWidget {
         appBar: AppBar(
           title: Text('主页'),
         ),
-        body: Image(width: 24.0, height: 24.0, image: AssetImage('assets/avatar.png')),
+        body: Column(
+          children: <Widget>[
+            Stack(
+              children: <Widget>[
+                //  渐进式加载图片
+                Center(child: CircularProgressIndicator()),
+                Center(
+                  child: FadeInImage.memoryNetwork(
+                      placeholder: kTransparentImage,
+                      image: 'http://www.devio.org/img/avatar.png'),
+                )
+              ],
+            ),
+            Stack(
+              children: <Widget>[
+                //  渐进式加载图片
+                Center(
+                    child: CachedNetworkImage(
+                      placeholder: (context, url) => CircularProgressIndicator(),
+                        imageUrl: 'https://picsum.photos/250?image=9')),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
