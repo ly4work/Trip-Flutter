@@ -1,6 +1,7 @@
 import 'package:chak/flutter_layout_page.dart';
 import 'package:chak/gesture_page.dart';
 import 'package:chak/home_page.dart';
+import 'package:chak/res_page.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MainApp());
@@ -21,6 +22,7 @@ class MainApp extends StatelessWidget {
         'layout': (BuildContext context) => LayoutPage(),
         'home': (BuildContext context) => HomePage(),
         'gesture': (BuildContext context) => GesturePage(),
+        'resource': (BuildContext context) => ResPage(),
       },
     );
   }
@@ -50,6 +52,7 @@ class _RouteNavigatorState extends State<RouteNavigator> {
           _item('layout 组件 Demo', LayoutPage(), 'layout'),
           _item('HomePage 组件 Demo', HomePage(), 'HomePage'),
           _item('GesturePage 组件 Demo', GesturePage(), 'GesturePage'),
+          _item('ResPage 组件 Demo', ResPage(), 'ResPage'),
         ],
       ),
     );

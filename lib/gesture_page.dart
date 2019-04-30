@@ -76,7 +76,7 @@ class _GesturePageState extends State<GesturePage> {
 
   void _printMsg(String msg) {
     setState(() {
-      printString = '$this.printString, $msg';
+      printString = '$printString, $msg';
     });
   }
 
