@@ -27,11 +27,13 @@ class _LogoAppState extends State<LogoApp> with SingleTickerProviderStateMixin {
         AnimationController(vsync: this, duration: Duration(seconds: 2));
     animation = Tween<double>(begin: 0, end: 300.0).animate(controller)
       ..addListener(() {
+        //  即使不做任何操作，也必须执行setState
         setState(() {
           animationValue = animation.value;
         });
       })
       ..addStatusListener((AnimationStatus state) {
+        //  即使不做任何操作，也必须执行setState
         setState(() {
           animationStatus = state;
         });
