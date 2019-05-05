@@ -1,70 +1,74 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
 
-void main() => runApp(LogoApp());
+void main() => runApp(MaterialApp(
+      home: HeroAnimation(),
+    ));
 
-//  动画 anmiation类
-class LogoApp extends StatefulWidget {
-  @override
-  _LogoAppState createState() => new _LogoAppState();
-}
+class PhotoHero extends StatelessWidget {
+  final String photo;
+  final VoidCallback onTap;
+  final double width;
 
-//  2. AnimatedBuilder 类
-class LogoWidget extends StatelessWidget {
+  const PhotoHero({Key key, this.photo, this.onTap, this.width})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      child: FlutterLogo(),
+    return SizedBox(
+      width: width,
+      child: Hero(
+          tag: photo,
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: onTap,
+              child: Image.network(
+                photo,
+                fit: BoxFit.contain,
+              ),
+            ),
+          )),
     );
   }
 }
 
-class GrowTransition extends StatelessWidget {
-  GrowTransition({this.child, this.animation});
-
-  final Widget child;
-  final Animation<double> animation;
+class HeroAnimation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: AnimatedBuilder(
-      animation: animation,
-      builder: (context, child) {
-        return Container(
-          height: animation.value,
-          width: animation.value,
-          child: child,
-        );
-      },
-      child: child,
-    ));
-  }
-}
-
-class _LogoAppState extends State<LogoApp> with SingleTickerProviderStateMixin {
-  Animation<double> animation;
-  AnimationController controller;
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    controller =
-        AnimationController(vsync: this, duration: Duration(seconds: 2));
-    animation = Tween<double>(begin: 0, end: 300.0).animate(controller);
-    controller.forward();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return GrowTransition(
-      animation: animation,
-      child: LogoWidget(),
+    timeDilation = 3.0;
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Basic Hero Animation'),
+      ),
+      body: Center(
+        child: PhotoHero(
+          photo:
+              'http://hbimg.b0.upaiyun.com/5e778c4fbfbe612b250babce22631bbcc26ff8bb1a674-FKsJib_fw658',
+          width: 100.0,
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              return Scaffold(
+                appBar: AppBar(
+                  title: const Text('Flippers Page'),
+                ),
+                body: Container(
+                  color: Colors.lightBlueAccent,
+                  padding: EdgeInsets.all(16.0),
+                  alignment: Alignment.topLeft,
+                  child: PhotoHero(
+                    photo:
+                        'http://hbimg.b0.upaiyun.com/5e778c4fbfbe612b250babce22631bbcc26ff8bb1a674-FKsJib_fw658',
+                    width: 200.0,
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ),
+              );
+            }));
+          },
+        ),
+      ),
     );
   }
 }
