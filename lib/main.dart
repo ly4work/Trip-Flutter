@@ -8,11 +8,27 @@ class LogoApp extends StatefulWidget {
   _LogoAppState createState() => new _LogoAppState();
 }
 
+//   animatedWidget可以自动添加监听器，不需要我们手动增加..addListener
+class AnimatedLogo extends AnimatedWidget {
+  AnimatedLogo({Key key, Animation<double> animation})
+      : super(key: key, listenable: animation);
+  @override
+  Widget build(BuildContext context) {
+    final Animation<double> animation = listenable;
+    return Center(
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 10.0),
+        height: animation.value,
+        width: animation.value,
+        child: FlutterLogo(),
+      ),
+    );
+  }
+}
+
 class _LogoAppState extends State<LogoApp> with SingleTickerProviderStateMixin {
   Animation<double> animation;
   AnimationController controller;
-  AnimationStatus animationStatus;
-  double animationValue = 0;
 
   @override
   void dispose() {
@@ -25,48 +41,14 @@ class _LogoAppState extends State<LogoApp> with SingleTickerProviderStateMixin {
     super.initState();
     controller =
         AnimationController(vsync: this, duration: Duration(seconds: 2));
-    animation = Tween<double>(begin: 0, end: 300.0).animate(controller)
-      ..addListener(() {
-        //  即使不做任何操作，也必须执行setState
-        setState(() {
-          animationValue = animation.value;
-        });
-      })
-      ..addStatusListener((AnimationStatus state) {
-        //  即使不做任何操作，也必须执行setState
-        setState(() {
-          animationStatus = state;
-        });
-      });
+    animation = Tween<double>(begin: 0, end: 300.0).animate(controller);
+    controller.forward();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        margin: EdgeInsets.only(top: 50),
-        child: Column(
-          children: <Widget>[
-            GestureDetector(
-              onTap: () {
-                controller.reset();
-                controller.forward();
-              },
-              child: Text(
-                'Start',
-                textDirection: TextDirection.ltr,
-              ),
-            ),
-            Text('State: ' + animationStatus.toString(),
-                textDirection: TextDirection.ltr),
-            Text('Value: ' + animationValue.toString(),
-                textDirection: TextDirection.ltr),
-            Text('abc: ', textDirection: TextDirection.ltr),
-            Container(
-              height: animation.value,
-              width: animation.value,
-              child: FlutterLogo(),
-            ),
-          ],
-        ));
+    return AnimatedLogo(
+      animation: animation,
+    );
   }
 }
