@@ -8,21 +8,36 @@ class LogoApp extends StatefulWidget {
   _LogoAppState createState() => new _LogoAppState();
 }
 
-//   animatedWidget可以自动添加监听器，不需要我们手动增加..addListener
-class AnimatedLogo extends AnimatedWidget {
-  AnimatedLogo({Key key, Animation<double> animation})
-      : super(key: key, listenable: animation);
+//  2. AnimatedBuilder 类
+class LogoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final Animation<double> animation = listenable;
-    return Center(
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 10.0),
-        height: animation.value,
-        width: animation.value,
-        child: FlutterLogo(),
-      ),
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      child: FlutterLogo(),
     );
+  }
+}
+
+class GrowTransition extends StatelessWidget {
+  GrowTransition({this.child, this.animation});
+
+  final Widget child;
+  final Animation<double> animation;
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: AnimatedBuilder(
+      animation: animation,
+      builder: (context, child) {
+        return Container(
+          height: animation.value,
+          width: animation.value,
+          child: child,
+        );
+      },
+      child: child,
+    ));
   }
 }
 
@@ -47,8 +62,9 @@ class _LogoAppState extends State<LogoApp> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedLogo(
+    return GrowTransition(
       animation: animation,
+      child: LogoWidget(),
     );
   }
 }
