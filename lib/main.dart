@@ -92,7 +92,7 @@ class RadialExpansionDemo extends StatelessWidget {
   static RectTween _createRectTween(Rect begin, Rect end) {
     return MaterialRectCenterArcTween(begin: begin, end: end);
   }
-
+  final String tit = '123';
   static Widget _buildPage(
       BuildContext context, String imageName, String description) {
     return Container(
