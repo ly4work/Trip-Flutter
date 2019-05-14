@@ -28,24 +28,40 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: Text('http'),
         ),
-        body: Column(
-          children: <Widget>[
-            InkWell(
-              onTap: () {
-                fetchPost().then((CommonModel value) {
-                  setState(() {
-                    showResult =
-                        '请求结果: \nhideAppBar: ${value.hideAppBar} \nicon: ${value.icon}  \ntitle: ${value.title} \nurl: ${value.url} \nstatusBarColor: ${value.statusBarColor}';
-                  });
-                });
-              },
-              child: Container(
-                padding: EdgeInsets.all(30.0),
-                child: Text('点我'),
-              ),
-            ),
-            Text(showResult)
-          ],
+        body: FutureBuilder<CommonModel>(
+          future: fetchPost(),
+          builder: (BuildContext context, AsyncSnapshot<CommonModel> snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                return new Text('Input a URL to start');
+                break;
+              case ConnectionState.waiting:
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+                break;
+              case ConnectionState.active:
+                return new Text('active ');
+                break;
+              case ConnectionState.done:
+                if (snapshot.hasError) {
+                  return new Text('${snapshot.error}',
+                      style: TextStyle(color: Colors.red));
+                } else {
+                  return new Column(
+                    children: <Widget>[
+                      Text('hideAppBar: ${snapshot.data.hideAppBar}'),
+                      Text('icon: ${snapshot.data.icon}'),
+                      Text('title: ${snapshot.data.title}'),
+                      Text('url: ${snapshot.data.url}'),
+                      Text('statusBarColor: ${snapshot.data.statusBarColor}'),
+                    ],
+                  );
+                }
+                break;
+              default:
+            }
+          },
         ),
       ),
     );
