@@ -2,6 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
+const COUNTRY = {
+  '中国': ['北京', '上海', '广州', '深圳', '成都', '武汉', '杭州', '苏州', '重庆', '天津'],
+  '俄罗斯': ['莫斯科', '列宁格勒', '斯大林格勒', '索契', '西伯利亚'],
+  '美国': ['华盛顿', '纽约', '波士顿', '洛杉矶', '阿拉斯加'],
+  '日本': ['东京', '京都', '大阪', '冲绳', '奈良', '早稻田'],
+  '韩国': ['北京', '上海', '广州', '深圳', '成都', '武汉', '杭州', '苏州', '重庆', '天津'],
+  '新加坡': ['莫斯科', '列宁格勒', '斯大林格勒', '索契', '西伯利亚'],
+  '马拉西亚': ['华盛顿', '纽约', '波士顿', '洛杉矶', '阿拉斯加'],
+  '英国': ['东京', '京都', '大阪', '冲绳', '奈良', '早稻田'],
+};
 void main() => runApp(MyApp());
 Utf8Decoder utf8decoder = Utf8Decoder();
 
@@ -19,37 +29,45 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('http'),
+          title: Text('ListView'),
         ),
-        body: Column(children: <Widget>[
-          RaisedButton(
-            child: Text('increment'),
-            onPressed: _incrementCoutner,
-          ),
-          RaisedButton(
-            onPressed: _getCounter,
-            child: Text('get count'),
-          ),
-          Text(countString)
-        ]),
+        body: ListView(
+          //  设置列表方向
+          // scrollDirection: Axis.horizontal,
+          children: _buildList(),
+        ),
       ),
     );
   }
 
-  _incrementCoutner() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      countString = countString + ' 1';
+  List<Widget> _buildList() {
+    List<Widget> widgets = [];
+    COUNTRY.keys.forEach((key) {
+      widgets.add(_item(key, COUNTRY[key]));
     });
-
-    int counter = (prefs.getInt('counter') ?? 0) + 1;
-    await prefs.setInt('counter', counter);
+    return widgets;
+    // return COUNTRY.map((city) => _item(city)).toList();
   }
 
-  _getCounter() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      localCount = prefs.getInt('counter').toString();
-    });
+  Widget _buildSub(String subCity) {
+    return FractionallySizedBox(
+      widthFactor: 1,
+      child: Container(
+        height: 50,
+        margin: EdgeInsets.only(bottom: 5),
+        decoration: BoxDecoration(color: Colors.lightBlue),
+        child: Text(subCity),
+      ),
+    );
+  }
+
+  Widget _item(String country, List<String> subCities) {
+    return ExpansionTile(
+      title: Text(
+        country,
+        style: TextStyle(color: Colors.black54, fontSize: 20),
+      ),
+      children: subCities.map((subCity) => _buildSub(subCity)).toList(),
+    );
   }
 }
