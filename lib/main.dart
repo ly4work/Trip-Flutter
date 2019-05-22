@@ -31,9 +31,8 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: Text('ListView'),
         ),
-        body: ListView(
-          //  设置列表方向
-          // scrollDirection: Axis.horizontal,
+        body: GridView.count(
+          crossAxisCount: 2,
           children: _buildList(),
         ),
       ),
@@ -41,33 +40,16 @@ class _MyAppState extends State<MyApp> {
   }
 
   List<Widget> _buildList() {
-    List<Widget> widgets = [];
-    COUNTRY.keys.forEach((key) {
-      widgets.add(_item(key, COUNTRY[key]));
-    });
-    return widgets;
+   return  COUNTRY.keys.map((country) => _item(country)).toList();
     // return COUNTRY.map((city) => _item(city)).toList();
   }
 
-  Widget _buildSub(String subCity) {
-    return FractionallySizedBox(
-      widthFactor: 1,
-      child: Container(
-        height: 50,
-        margin: EdgeInsets.only(bottom: 5),
-        decoration: BoxDecoration(color: Colors.lightBlue),
-        child: Text(subCity),
-      ),
-    );
-  }
-
-  Widget _item(String country, List<String> subCities) {
-    return ExpansionTile(
-      title: Text(
-        country,
-        style: TextStyle(color: Colors.black54, fontSize: 20),
-      ),
-      children: subCities.map((subCity) => _buildSub(subCity)).toList(),
+  Widget _item(String country) {
+    return Container(
+      height: 80,
+      margin: EdgeInsets.only(bottom: 5),
+      decoration: BoxDecoration(color: Colors.teal),
+      child: Text(country),
     );
   }
 }
